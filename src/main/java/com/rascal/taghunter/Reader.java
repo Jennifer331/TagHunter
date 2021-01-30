@@ -46,11 +46,19 @@ public class Reader{
 
             reader.start();
 
+            System.out.println("Print s to stop...");
             Scanner in = new Scanner(System.in);
-            in.nextLine();
-
+            String input = "";
+            while (!input.equals("s")) {
+                input = in.nextLine();
+            }
+            
             reader.stop();
             reader.disconnect();
+            
+            System.out.println("Saving... Please input the file name:");
+            String filename = in.nextLine();
+            StorageManager.getInstance().saveToFile(filename);
         } catch (OctaneSdkException e) {
             System.err.println(e);
         }

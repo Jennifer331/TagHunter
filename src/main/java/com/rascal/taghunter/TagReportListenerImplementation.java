@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -38,9 +39,25 @@ public class TagReportListenerImplementation implements TagReportListener{
     @Override
     public void onTagReported(ImpinjReader reader, TagReport tr) {
         List<Tag> tags = tr.getTags();
+        localStorage(tags);
         broadcast(tags);
     }
     
+    private void localStorage(List<Tag> tags) {
+        List<Record> records = new LinkedList<>();
+        
+        for (Tag t : tags) {
+            String epc = t.getEpc().toString();
+            double channel = t.getChannelInMhz();
+            double phase = t.getPhaseAngleInRadians();
+            double rssi = t.getPeakRssiInDbm();
+            
+            records.add(new Record(epc, channel, phase, rssi));
+        }
+        
+        StorageManager.getInstance().save(records);
+    }
+   
     int max = 0;
     private void broadcast(List<Tag> tags) {
         try {
@@ -49,9 +66,9 @@ public class TagReportListenerImplementation implements TagReportListener{
                 out = new PrintWriter(clientSocket.getOutputStream(), true);
             }
             String message = gson.toJson(tags);
-            System.out.println(message);
+//            System.out.println(message);
             max = Math.max(max, message.length());
-            System.out.println("max length till now: " + max);
+//            System.out.println("max length till now: " + max);
             out.println(message);
         } catch (IOException e) {
             System.err.println(e);
