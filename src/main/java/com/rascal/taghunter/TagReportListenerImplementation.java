@@ -50,12 +50,13 @@ public class TagReportListenerImplementation implements TagReportListener{
             String epc = t.getEpc().toString();
             double channel = t.getChannelInMhz();
             double phase = t.getPhaseAngleInRadians();
+//            System.out.println("channel: " + channel);
             double rssi = t.getPeakRssiInDbm();
             
             records.add(new Record(epc, channel, phase, rssi));
         }
         
-        StorageManager.getInstance().save(records);
+        StorageManager.getInstance().add(records);
     }
    
     int max = 0;
@@ -75,4 +76,7 @@ public class TagReportListenerImplementation implements TagReportListener{
         }
     }
 
+    public void reconnect() {
+        out = null;
+    }
 }

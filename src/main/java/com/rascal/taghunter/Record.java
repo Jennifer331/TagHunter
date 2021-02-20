@@ -7,6 +7,7 @@
 package com.rascal.taghunter;
 
 import com.opencsv.bean.CsvBindByName;
+import java.util.Date;
 
 /**
  *
@@ -25,11 +26,15 @@ public class Record {
     @CsvBindByName(column = "RSSI")
     private double peakRssiInDbm;
     
+    @CsvBindByName(column = "TIME")
+    private String time;
+    
     public Record(String epc, double channel, double phase, double rssi) {
         this.epc = epc;
         channelInMhz = channel;
         phaseAngleInRadians = phase;
         peakRssiInDbm = rssi;
+        time = new Date().toString();
     }
 
     @Override
@@ -38,7 +43,8 @@ public class Record {
         sb.append("EPC: ").append(epc).append(", ")
                 .append("Channel: ").append(channelInMhz).append(",")
                 .append("Phase: ").append(phaseAngleInRadians).append(", ")
-                .append("RSSI: ").append(peakRssiInDbm).append("\n");
+                .append("RSSI: ").append(peakRssiInDbm).append("\n")
+                .append("Time: ").append(time).append("\n");
         return sb.toString();
     }
 
@@ -72,6 +78,14 @@ public class Record {
 
     public void setPeakRssiInDbm(double peakRssiInDbm) {
         this.peakRssiInDbm = peakRssiInDbm;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
     
     
