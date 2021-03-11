@@ -7,6 +7,7 @@
 package com.rascal.taghunter;
 
 import com.impinj.octane.AntennaConfig;
+import com.impinj.octane.AntennaConfigGroup;
 import com.impinj.octane.ImpinjReader;
 import com.impinj.octane.OctaneSdkException;
 import com.impinj.octane.ReaderMode;
@@ -25,6 +26,7 @@ public class Reader{
 
     private static final String HOSTNAME = "hostname";
     private static final String DEFAULT_HOSTNAME = "169.254.1.1";
+//    private static final String DEFAULT_HOSTNAME = "192.168.2.42";
     private static final double[] FREQUENCY_HOPPINT_tABLE = new double[]{902.75, 903.25, 903.75, 904.25, 904.75, 905.25, 905.75, 906.25, 906.75, 907.25, 907.75, 908.25, 908.75, 909.25, 909.75, 910.25, 910.75, 911.25, 911.75, 912.25, 912.75, 913.25, 913.75, 914.25, 914.75, 915.25, 915.75, 916.25, 916.75, 917.25, 917.75, 918.25, 918.75, 919.25, 919.75, 920.25, 920.75, 921.25, 921.75, 922.25, 922.75, 923.25, 923.75, 924.25, 924.75, 925.25, 925.75, 926.25, 926.75, 927.25};
     
     private static TagReportListenerImplementation listener;
@@ -51,8 +53,21 @@ public class Reader{
             r.setIncludeChannel(true);
             r.setIncludePeakRssi(true);
             r.setIncludePhaseAngle(true);
+            r.setIncludeDopplerFrequency(true);
+            r.setIncludeLastSeenTime(true);
             
-            settings.setReaderMode(ReaderMode.DenseReaderM4);
+//            settings.setReaderMode(ReaderMode.AutoSetStaticDRM);
+//            settings.setReaderMode(ReaderMode.AutoSetDenseReaderDeepScan);
+//            settings.setReaderMode(ReaderMode.DenseReaderM8);
+//            settings.setReaderMode(ReaderMode.DenseReaderM4);
+//            settings.setReaderMode(ReaderMode.Hybrid);
+//            settings.setReaderMode(ReaderMode.MaxMiller);
+//            settings.setReaderMode(ReaderMode.MaxThroughput);
+            
+//            AntennaConfigGroup antennas = settings.getAntennas();
+//            antennas.getAntenna((short)1).setIsMaxTxPower(false);
+//            antennas.getAntenna((short)1).setTxPowerinDbm(30);
+            
             reader.applySettings(settings);
 
             displayCurrentSettings(reader);

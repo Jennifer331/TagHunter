@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.Timestamp;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,7 +54,10 @@ public class TagReportListenerImplementation implements TagReportListener{
 //            System.out.println("channel: " + channel);
             double rssi = t.getPeakRssiInDbm();
             
-            records.add(new Record(epc, channel, phase, rssi));
+            double doppler = t.getRfDopplerFrequency();
+            String time = new Timestamp(t.getLastSeenTime().getLocalDateTime().getTime()).toString();
+            
+            records.add(new Record(epc, channel, phase, rssi, doppler, time));
         }
         
         StorageManager.getInstance().add(records);

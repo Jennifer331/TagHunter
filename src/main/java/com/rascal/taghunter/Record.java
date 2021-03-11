@@ -26,25 +26,32 @@ public class Record {
     @CsvBindByName(column = "RSSI")
     private double peakRssiInDbm;
     
+    @CsvBindByName(column = "DOPPLER")
+    private double dopplerFrequency;
+    
     @CsvBindByName(column = "TIME")
     private String time;
     
-    public Record(String epc, double channel, double phase, double rssi) {
+    public Record(String epc, double channel, double phase, double rssi,
+            double doppler, String t) {
         this.epc = epc;
         channelInMhz = channel;
         phaseAngleInRadians = phase;
         peakRssiInDbm = rssi;
-        time = new Date().toString();
+        dopplerFrequency = doppler;
+        time = t;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("EPC: ").append(epc).append(", ")
+        sb
+                .append("EPC: ").append(epc).append(", ")
                 .append("Channel: ").append(channelInMhz).append(",")
                 .append("Phase: ").append(phaseAngleInRadians).append(", ")
                 .append("RSSI: ").append(peakRssiInDbm).append("\n")
-                .append("Time: ").append(time).append("\n");
+                .append("Time: ").append(time).append("\n")
+                .append("Doppler Frequency: ").append(dopplerFrequency);
         return sb.toString();
     }
 
@@ -86,6 +93,14 @@ public class Record {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public double getDopplerFrequency() {
+        return dopplerFrequency;
+    }
+
+    public void setDopplerFrequency(double dopplerFrequency) {
+        this.dopplerFrequency = dopplerFrequency;
     }
     
     
