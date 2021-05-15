@@ -13,6 +13,8 @@ import com.impinj.octane.OctaneSdkException;
 import com.impinj.octane.ReaderMode;
 import com.impinj.octane.ReportConfig;
 import com.impinj.octane.Settings;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,7 +24,7 @@ import java.util.Scanner;
  *
  * @author Xiaoyue Lei
  */
-public class Reader{
+public class Reader_grill_train{
 
     private static final String HOSTNAME = "hostname";
     private static final String DEFAULT_HOSTNAME = "169.254.1.1";
@@ -30,8 +32,9 @@ public class Reader{
     private static final double[] FREQUENCY_HOPPINT_tABLE = new double[]{902.75, 903.25, 903.75, 904.25, 904.75, 905.25, 905.75, 906.25, 906.75, 907.25, 907.75, 908.25, 908.75, 909.25, 909.75, 910.25, 910.75, 911.25, 911.75, 912.25, 912.75, 913.25, 913.75, 914.25, 914.75, 915.25, 915.75, 916.25, 916.75, 917.25, 917.75, 918.25, 918.75, 919.25, 919.75, 920.25, 920.75, 921.25, 921.75, 922.25, 922.75, 923.25, 923.75, 924.25, 924.75, 925.25, 925.75, 926.25, 926.75, 927.25};
     
     private static TagReportListenerImplementation listener;
-    public static void main(String[] args) {
-        System.out.println("TagHunter wakes up!");
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        System.setOut(new PrintStream(System.out, true, "UTF8"));
+        System.out.println("阅读器启动中……");
         initReader();
     }
     
@@ -77,8 +80,8 @@ public class Reader{
             String input = "";
             boolean alive = true;
             while (alive) {
-                System.out.println("Please input \n q to quit, s to save, c to "
-                        + "clear history data, d to disconnect");
+                System.out.println("请输入\n q 退出，"
+                        + "s 停止采集，c 清除数据");
                 input = in.nextLine();
                 StorageManager.getInstance().suspend();
                 switch (input) {
@@ -86,12 +89,9 @@ public class Reader{
                         alive = false;
                         break;
                     case "s":
-                        System.out.println("Saving... Please input the file name:");
+                        System.out.println("正面数据请输入\"液体名称_h\"，反面数据请输入\"液体名称_t\"");
                         String filename = in.nextLine();
-                        StorageManager.getInstance().saveToFile(filename, false);
-                        StorageManager.getInstance().clear();
-                        break;
-                    case "c":
+                        StorageManager.getInstance().saveToFile(filename, true);
                         StorageManager.getInstance().clear();
                         break;
                     case "d":
@@ -113,7 +113,7 @@ public class Reader{
     
     private static void displayCurrentSettings(ImpinjReader r) throws OctaneSdkException{
         System.out.println("---------------");
-        System.out.println("Reader Settings");
+        System.out.println("阅读器配置");
         System.out.println("---------------");
         
         Settings settings = r.querySettings();

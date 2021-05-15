@@ -19,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -56,10 +57,16 @@ public class StorageManager {
         records.clear();
     }
 
-    public void saveToFile(String name) {
+    public void saveToFile(String name, boolean replace) {
         DateFormat df = new SimpleDateFormat("yyyyMMdd");
         File file = new File("d:\\Atom\\exp\\" + df.format(new Date()) + "\\" + name + ".csv");
         file.getParentFile().mkdirs();
+        if (!replace && file.exists()) {
+            Random r = new Random();
+            file = new File("d:\\Atom\\exp\\"
+                    + df.format(new Date()) + "\\"
+                    + name + r.nextInt(50) + ".csv");
+        }
         try {
             Writer writer = new FileWriter(file);
             StatefulBeanToCsv beanToCsv = new StatefulBeanToCsvBuilder(writer).build();
